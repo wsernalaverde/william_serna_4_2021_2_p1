@@ -2,6 +2,8 @@
 
 import 'dart:convert';
 
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -71,6 +73,22 @@ class _ListPsychonautsScreenState extends State<ListPsychonautsScreen> {
       _psychonauts = [];
     });
 
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {
+        _showLoader = false;
+      });
+      await showAlertDialog(
+          title: 'Error',
+          context: context,
+          message: 'Verifica que estes conectado a internet.',
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar')
+          ]);
+      return;
+    }
+
     var url = Uri.parse(Constans.apiUrl);
     var response = await http.get(url, headers: {
       'content-type': 'application/json',
@@ -88,8 +106,6 @@ class _ListPsychonautsScreenState extends State<ListPsychonautsScreen> {
         _psychonauts.add(Psychonauts.fromJson(item));
       }
     }
-
-    print(_psychonauts);
   }
 
   _noContent() {
