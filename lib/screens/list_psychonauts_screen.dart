@@ -65,9 +65,10 @@ class _ListPsychonautsScreenState extends State<ListPsychonautsScreen> {
     return _psychonauts.length == 0 ? _noContent() : getListView();
   }
 
-  void _getPsychonauts() async {
+  Future<Null> _getPsychonauts() async {
     setState(() {
       _showLoader = true;
+      _psychonauts = [];
     });
 
     var url = Uri.parse(Constans.apiUrl);
@@ -152,46 +153,63 @@ class _ListPsychonautsScreenState extends State<ListPsychonautsScreen> {
   }
 
   Widget getListView() {
-    return ListView(
-      children: _psychonauts.map((e) {
-        return Card(
-          child: InkWell(
-            onTap: () {},
-            child: Container(
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.all(5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Stack(children: <Widget>[
-                    Text(
-                      e.name.toUpperCase(),
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                          foreground: Paint()
-                            ..style = PaintingStyle.stroke
-                            ..strokeWidth = 1
-                            ..color = Color(0xFF107621)),
+    return RefreshIndicator(
+      onRefresh: _getPsychonauts,
+      child: ListView(
+        children: _psychonauts.map((e) {
+          return Card(
+            child: InkWell(
+              onTap: () {},
+              child: Container(
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(5),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: FadeInImage(
+                          placeholder: AssetImage('assets/logo-load-photo.png'),
+                          image: NetworkImage(e.img),
+                          width: 80,
+                          height: 80,
+                          alignment: Alignment.topCenter,
+                          fit: BoxFit.cover),
                     ),
-                    Text(
-                      e.name.toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        color: Color(0xFF000000),
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        child: Stack(children: <Widget>[
+                          Text(
+                            e.name.toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                                foreground: Paint()
+                                  ..style = PaintingStyle.stroke
+                                  ..strokeWidth = 1
+                                  ..color = Color(0xFF107621)),
+                          ),
+                          Text(
+                            e.name.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Color(0xFF000000),
+                            ),
+                          ),
+                        ]),
                       ),
                     ),
-                  ]),
-                  Icon(Icons.navigate_next)
-                ],
+                    Icon(Icons.navigate_next)
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      }).toList(),
+          );
+        }).toList(),
+      ),
     );
   }
 
