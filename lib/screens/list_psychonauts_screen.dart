@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:william_serna_4_2021_2_p1/components/loader_component.dart';
 import 'package:william_serna_4_2021_2_p1/helpers/constans.dart';
 import 'package:william_serna_4_2021_2_p1/models/psychonauts.dart';
+import 'package:william_serna_4_2021_2_p1/screens/psychonaut_screen.dart';
 
 class ListPsychonautsScreen extends StatefulWidget {
   const ListPsychonautsScreen({Key? key}) : super(key: key);
@@ -175,7 +176,7 @@ class _ListPsychonautsScreenState extends State<ListPsychonautsScreen> {
         children: _psychonauts.map((e) {
           return Card(
             child: InkWell(
-              onTap: () {},
+              onTap: () => _viewPsychonaut(e),
               child: Container(
                 margin: EdgeInsets.all(10),
                 padding: EdgeInsets.all(5),
@@ -322,5 +323,12 @@ class _ListPsychonautsScreenState extends State<ListPsychonautsScreen> {
     });
 
     Navigator.of(context).pop();
+  }
+
+  _viewPsychonaut(Psychonauts e) async {
+    String? result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => PsychonautScreen(psychonaut: e)));
   }
 }

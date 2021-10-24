@@ -13,8 +13,9 @@ class LoaderComponent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(
-            color: Color(0xFF02baf1),
+          Image(
+            image: AssetImage('assets/animation-loader.gif'),
+            width: 200,
           ),
           SizedBox(
             height: 30,
