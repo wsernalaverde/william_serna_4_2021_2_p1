@@ -80,30 +80,56 @@ class _PsychonautScreenState extends State<PsychonautScreen> {
       child: Container(
         margin: EdgeInsets.all(10),
         padding: EdgeInsets.all(5),
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(
+            Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: FadeInImage(
+                    placeholder: AssetImage('assets/logo-load-photo.png'),
+                    image: NetworkImage(widget.psychonaut.img),
+                    width: 80,
+                    height: 80,
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.cover),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Stack(children: <Widget>[
+              Text(
+                widget.psychonaut.name.toUpperCase(),
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    foreground: Paint()
+                      ..style = PaintingStyle.stroke
+                      ..strokeWidth = 1
+                      ..color = Color(0xFF107621)),
+              ),
+              Text(
+                widget.psychonaut.name.toUpperCase(),
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  color: Color(0xFF000000),
+                ),
+              ),
+            ]),
+            SizedBox(
+              height: 5,
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: FadeInImage(
-                        placeholder: AssetImage('assets/logo-load-photo.png'),
-                        image: NetworkImage(widget.psychonaut.img),
-                        width: 80,
-                        height: 80,
-                        alignment: Alignment.topCenter,
-                        fit: BoxFit.cover),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
+                Icon(Icons.person),
                 Stack(children: <Widget>[
                   Text(
-                    widget.psychonaut.name.toUpperCase(),
+                    widget.psychonaut.gender,
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -114,7 +140,7 @@ class _PsychonautScreenState extends State<PsychonautScreen> {
                           ..color = Color(0xFF107621)),
                   ),
                   Text(
-                    widget.psychonaut.name.toUpperCase(),
+                    widget.psychonaut.gender,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -123,78 +149,48 @@ class _PsychonautScreenState extends State<PsychonautScreen> {
                     ),
                   ),
                 ]),
-                SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  children: [
-                    Icon(Icons.person),
-                    Stack(children: <Widget>[
-                      Text(
-                        widget.psychonaut.gender,
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                            foreground: Paint()
-                              ..style = PaintingStyle.stroke
-                              ..strokeWidth = 1
-                              ..color = Color(0xFF107621)),
-                      ),
-                      Text(
-                        widget.psychonaut.gender,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                          color: Color(0xFF000000),
-                        ),
-                      ),
-                    ]),
-                  ],
-                ),
-                Divider(
-                  height: 20,
-                  thickness: 5,
-                  indent: 20,
-                  color: Colors.red,
-                ),
-                Stack(children: <Widget>[
-                  Text(
-                    'Powers',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        foreground: Paint()
-                          ..style = PaintingStyle.stroke
-                          ..strokeWidth = 7
-                          ..color = Color(0xFF02baf1)),
-                  ),
-                  Text(
-                    'Powers',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        foreground: Paint()
-                          ..style = PaintingStyle.stroke
-                          ..strokeWidth = 5
-                          ..color = Color(0xFF000000)),
-                  ),
-                  Text(
-                    'Powers',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                      color: Color(0xFFfdee03),
-                    ),
-                  ),
-                ]),
-                // _showListPowers(),
               ],
             ),
+            SizedBox(
+              height: 20,
+            ),
+            Stack(children: <Widget>[
+              Text(
+                'Powers',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    foreground: Paint()
+                      ..style = PaintingStyle.stroke
+                      ..strokeWidth = 7
+                      ..color = Color(0xFF02baf1)),
+              ),
+              Text(
+                'Powers',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    foreground: Paint()
+                      ..style = PaintingStyle.stroke
+                      ..strokeWidth = 5
+                      ..color = Color(0xFF000000)),
+              ),
+              Text(
+                'Powers',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  color: Color(0xFFfdee03),
+                ),
+              ),
+            ]),
+            SizedBox(
+              height: 10,
+            ),
+            _showListPowers(),
           ],
         ),
       ),
@@ -202,59 +198,68 @@ class _PsychonautScreenState extends State<PsychonautScreen> {
   }
 
   Widget _showListPowers() {
-    return Row(
-      children: [
-        Expanded(
+    return Column(
+      children: widget.psychonaut.psiPowers.map((item) {
+        return Container(
+          margin: EdgeInsets.all(5),
           child: Column(
-            children: widget.psychonaut.psiPowers.map((item) {
-              return Container(
-                margin: EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(40),
-                      child: FadeInImage(
-                          placeholder: AssetImage('assets/logo-load-photo.png'),
-                          image: NetworkImage(item.img),
-                          width: 40,
-                          height: 40,
-                          alignment: Alignment.topCenter,
-                          fit: BoxFit.cover),
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: FadeInImage(
+                    placeholder: AssetImage('assets/logo-load-photo.png'),
+                    image: NetworkImage(item.img),
+                    width: 40,
+                    height: 40,
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.cover),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Column(
+                children: [
+                  Stack(children: <Widget>[
+                    Text(
+                      item.name.toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          foreground: Paint()
+                            ..style = PaintingStyle.stroke
+                            ..strokeWidth = 1
+                            ..color = Color(0xFF107621)),
                     ),
-                    Column(
-                      children: [
-                        Stack(children: <Widget>[
-                          Text(
-                            item.name.toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic,
-                                foreground: Paint()
-                                  ..style = PaintingStyle.stroke
-                                  ..strokeWidth = 1
-                                  ..color = Color(0xFF107621)),
-                          ),
-                          Text(
-                            item.name.toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic,
-                              color: Color(0xFF000000),
-                            ),
-                          ),
-                        ]),
-                        Text('ashjdhajshkdhjkashdksahsadsadd ')
-                      ],
+                    Text(
+                      item.name.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        color: Color(0xFF000000),
+                      ),
                     ),
-                  ],
-                ),
-              );
-            }).toList(),
+                  ]),
+                  Text(
+                    item.description,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Divider(
+                    height: 20,
+                    thickness: 1,
+                    indent: 20,
+                    color: Color(0xFF025151),
+                  ),
+                ],
+              ),
+            ],
           ),
-        )
-      ],
+        );
+      }).toList(),
     );
   }
 }
