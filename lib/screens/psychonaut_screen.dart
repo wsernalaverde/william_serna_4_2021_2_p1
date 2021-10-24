@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, use_key_in_widget_constructors, prefer_final_fields
 
 import 'package:flutter/material.dart';
 import 'package:william_serna_4_2021_2_p1/components/loader_component.dart';
@@ -15,12 +15,10 @@ class PsychonautScreen extends StatefulWidget {
 
 class _PsychonautScreenState extends State<PsychonautScreen> {
   bool _showLoader = false;
-  String _name = '';
 
   @override
   void initState() {
     super.initState();
-    _name = widget.psychonaut.name;
   }
 
   @override
@@ -69,35 +67,41 @@ class _PsychonautScreenState extends State<PsychonautScreen> {
             ? LoaderComponent(
                 text: 'Tierra llamando Psychonauts...',
               )
-            : Column(
-                children: <Widget>[_showInfo()],
-              ),
+            : _showInfo(),
       ),
     );
   }
 
   Widget _showInfo() {
-    return Container(
-      padding: EdgeInsets.all(10),
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      margin: EdgeInsets.all(15),
+      elevation: 10,
       child: Container(
         margin: EdgeInsets.all(10),
         padding: EdgeInsets.all(5),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(40),
-              child: FadeInImage(
-                  placeholder: AssetImage('assets/logo-load-photo.png'),
-                  image: NetworkImage(widget.psychonaut.img),
-                  width: 80,
-                  height: 80,
-                  alignment: Alignment.topCenter,
-                  fit: BoxFit.cover),
-            ),
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                child: Stack(children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(40),
+                    child: FadeInImage(
+                        placeholder: AssetImage('assets/logo-load-photo.png'),
+                        image: NetworkImage(widget.psychonaut.img),
+                        width: 80,
+                        height: 80,
+                        alignment: Alignment.topCenter,
+                        fit: BoxFit.cover),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Stack(children: <Widget>[
                   Text(
                     widget.psychonaut.name.toUpperCase(),
                     style: TextStyle(
@@ -119,11 +123,138 @@ class _PsychonautScreenState extends State<PsychonautScreen> {
                     ),
                   ),
                 ]),
-              ),
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.person),
+                    Stack(children: <Widget>[
+                      Text(
+                        widget.psychonaut.gender,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            foreground: Paint()
+                              ..style = PaintingStyle.stroke
+                              ..strokeWidth = 1
+                              ..color = Color(0xFF107621)),
+                      ),
+                      Text(
+                        widget.psychonaut.gender,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          color: Color(0xFF000000),
+                        ),
+                      ),
+                    ]),
+                  ],
+                ),
+                Divider(
+                  height: 20,
+                  thickness: 5,
+                  indent: 20,
+                  color: Colors.red,
+                ),
+                Stack(children: <Widget>[
+                  Text(
+                    'Powers',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        foreground: Paint()
+                          ..style = PaintingStyle.stroke
+                          ..strokeWidth = 7
+                          ..color = Color(0xFF02baf1)),
+                  ),
+                  Text(
+                    'Powers',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        foreground: Paint()
+                          ..style = PaintingStyle.stroke
+                          ..strokeWidth = 5
+                          ..color = Color(0xFF000000)),
+                  ),
+                  Text(
+                    'Powers',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      color: Color(0xFFfdee03),
+                    ),
+                  ),
+                ]),
+                // _showListPowers(),
+              ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _showListPowers() {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            children: widget.psychonaut.psiPowers.map((item) {
+              return Container(
+                margin: EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: FadeInImage(
+                          placeholder: AssetImage('assets/logo-load-photo.png'),
+                          image: NetworkImage(item.img),
+                          width: 40,
+                          height: 40,
+                          alignment: Alignment.topCenter,
+                          fit: BoxFit.cover),
+                    ),
+                    Column(
+                      children: [
+                        Stack(children: <Widget>[
+                          Text(
+                            item.name.toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                                foreground: Paint()
+                                  ..style = PaintingStyle.stroke
+                                  ..strokeWidth = 1
+                                  ..color = Color(0xFF107621)),
+                          ),
+                          Text(
+                            item.name.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Color(0xFF000000),
+                            ),
+                          ),
+                        ]),
+                        Text('ashjdhajshkdhjkashdksahsadsadd ')
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        )
+      ],
     );
   }
 }

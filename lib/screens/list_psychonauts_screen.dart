@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_local_variable, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, unused_local_variable, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables, prefer_is_empty
 
 import 'dart:convert';
 
